@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useActionState } from 'react';
+import { useActionState, useEffect, useRef } from 'react';
 import { CheckIcon, ClockIcon, CurrencyDollarIcon, ExclamationCircleIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import type { CustomerField, InvoiceForm } from '@/app/lib/definitions';
 import { createInvoice, updateInvoice, type InvoiceFormState } from '@/app/lib/actions';
@@ -28,8 +28,18 @@ export default function InvoiceFormView({ customers, invoice }: { customers: Cus
   const customerId = v?.customerId ?? invoice?.customer_id ?? '';
   const amount = v?.amount ?? (invoice ? centsToDollars(invoice.amount) : '');
   const status = v?.status ?? invoice?.status ?? '';
-  const date = v?.date ?? invoice?.date ?? new Date().toISOString().slice(0, 10);
+  const date = v?.date ?? invoice?.date ?? '';
   const e = state.errors ?? {};
+
+  // New invoice: default the date to today in the visitor's own time zone (not UTC).
+  const dateRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const input = dateRef.current;
+    if (!invoice && input && !input.value) {
+      const now = new Date();
+      input.value = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    }
+  }, [invoice]);
   const inputCls = 'peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500';
 
   return (
@@ -62,7 +72,7 @@ export default function InvoiceFormView({ customers, invoice }: { customers: Cus
 
         <div className="mb-4">
           <label htmlFor="date" className="mb-2 block text-sm font-medium">Invoice date</label>
-          <input id="date" name="date" type="date" defaultValue={date} key={`d-${date}`}
+          <input id="date" name="date" type="date" ref={dateRef} defaultValue={date} key={`d-${date}`}
             aria-describedby="date-error" aria-invalid={!!e.date}
             className="block w-full rounded-md border border-gray-200 px-3 py-2 text-sm outline-2" />
           <FieldError id="date-error" messages={e.date} />

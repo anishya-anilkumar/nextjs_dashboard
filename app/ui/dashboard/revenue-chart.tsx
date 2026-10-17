@@ -10,7 +10,7 @@ export default async function RevenueChart() {
 
   return (
     <div className="w-full md:col-span-4">
-      <h2 className="mb-4 font-display text-xl md:text-2xl">Monthly revenue</h2>
+      <h2 className="mb-4 font-display text-xl md:text-2xl">Recent Revenue</h2>
       <div className="rounded-xl bg-gray-50 p-4">
         {!hasData ? (
           <p className="py-24 text-center text-sm text-gray-500">

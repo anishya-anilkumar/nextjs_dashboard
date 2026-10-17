@@ -19,8 +19,34 @@ async function CustomersTable({ query }: { query: string }) {
     );
   }
   return (
-    <div className="mt-6 overflow-x-auto rounded-lg bg-gray-50 p-2">
-      <table className="min-w-full text-left text-sm text-gray-900">
+    <div className="mt-6 rounded-lg bg-gray-50 p-2 md:overflow-x-auto">
+      {/* Mobile: cards */}
+      <div className="md:hidden">
+        {customers.map((c) => (
+          <div key={c.id} className="mb-2 w-full rounded-md bg-white p-4">
+            <div className="flex items-center gap-3 border-b pb-4">
+              <Avatar name={c.name} />
+              <div>
+                <p>{c.name}</p>
+                <p className="text-sm text-gray-500">{c.email}</p>
+              </div>
+            </div>
+            <div className="flex w-full items-center justify-between border-b py-5">
+              <div className="flex w-1/2 flex-col">
+                <p className="text-xs text-gray-500">Pending</p>
+                <p className="font-medium">{formatCurrency(c.outstanding)}</p>
+              </div>
+              <div className="flex w-1/2 flex-col">
+                <p className="text-xs text-gray-500">Paid</p>
+                <p className="font-medium">{formatCurrency(c.total_invoiced - c.outstanding)}</p>
+              </div>
+            </div>
+            <p className="pt-4 text-sm">{c.total_invoices} {c.total_invoices === 1 ? 'invoice' : 'invoices'}</p>
+          </div>
+        ))}
+      </div>
+      {/* Desktop: table */}
+      <table className="hidden min-w-full text-left text-sm text-gray-900 md:table">
         <thead>
           <tr>
             <th scope="col" className="px-4 py-4 font-medium sm:pl-6">Customer</th>

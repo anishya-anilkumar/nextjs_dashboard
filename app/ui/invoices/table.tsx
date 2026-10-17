@@ -61,7 +61,8 @@ export default async function InvoicesTable({
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-sm font-normal">
               <tr>
-                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">Customer</th>
+                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">#</th>
+                <th scope="col" className="px-3 py-5 font-medium">Customer</th>
                 <th scope="col" className="px-3 py-5 font-medium">Email</th>
                 <th scope="col" className="px-3 py-5 font-medium">Amount</th>
                 <th scope="col" className="px-3 py-5 font-medium">Date</th>
@@ -72,7 +73,8 @@ export default async function InvoicesTable({
             <tbody className="bg-white">
               {invoices.map((inv) => (
                 <tr key={inv.id} className="w-full border-b py-3 text-sm last-of-type:border-none">
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                  <td className="whitespace-nowrap py-3 pl-6 pr-3 text-gray-500">{inv.id.slice(0, 8)}…</td>
+                  <td className="whitespace-nowrap px-3 py-3">
                     <div className="flex items-center gap-3"><Avatar name={inv.name} /><p>{inv.name}</p></div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">{inv.email}</td>

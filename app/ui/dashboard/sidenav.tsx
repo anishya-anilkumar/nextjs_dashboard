@@ -23,7 +23,7 @@ export default function SideNav({
     <form action={signOutAction}>
       <button className="flex h-12 w-full grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 focus-visible:outline-2 focus-visible:outline-blue-500 md:flex-none md:justify-start md:p-2 md:px-3">
         <PowerIcon className="w-6" />
-        <span>Sign out</span>
+        <span>Sign Out</span>
       </button>
     </form>
   );

@@ -18,7 +18,7 @@ Node.js 20.9+ (22 recommended) and a PostgreSQL database (local, Vercel Postgres
 ## Setup
 ```bash
 npm install
-cp .env.example .env        # then edit .env
+cp .env.example .env        # then edit .env (Next.js and the db scripts both read it)
 ```
 Fill in `.env`:
 - `POSTGRES_URL` – connection string (hosted providers usually need `?sslmode=require`)
@@ -33,7 +33,8 @@ npm run db:seed       # demo data: 10 customers, 36 invoices, user demo@example.
 npm run dev           # http://localhost:3000
 ```
 Log in with `demo@example.com` and the `SEED_DEMO_PASSWORD` you chose. Demo rows have `is_demo = TRUE`;
-re-running the seed replaces only demo rows. To remove them: `DELETE FROM customers WHERE is_demo; DELETE FROM users WHERE is_demo;`.
+re-running the seed replaces only the demo invoices and the demo user (customers and invoices you created are kept).
+To remove demo data: `DELETE FROM invoices WHERE is_demo; DELETE FROM users WHERE is_demo;`.
 
 **Real users:** insert a user with a bcrypt hash, e.g.
 `node -e "console.log(require('bcryptjs').hashSync('YOUR_PASSWORD',12))"` then

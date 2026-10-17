@@ -1,7 +1,8 @@
 /**
  * Seeds DEMO data only. Every row is flagged is_demo = TRUE so it can be told
  * apart from real data.
- * Re-running replaces previous demo rows; real rows are never touched.
+ * Re-running replaces the demo invoices and the demo user. Customers stay, so
+ * invoices you created yourself are never deleted.
  */
 import bcrypt from 'bcryptjs';
 import { connect } from './db';
@@ -38,8 +39,9 @@ async function main() {
   const sql = connect();
   try {
     await sql.begin(async (tx) => {
-      // Invoices cascade from customers.
-      await tx`DELETE FROM customers WHERE is_demo`;
+      // Only demo invoices are removed. Customers stay (deleting a customer would
+      // also delete every invoice you created for it).
+      await tx`DELETE FROM invoices WHERE is_demo`;
       await tx`DELETE FROM users WHERE is_demo`;
 
       const hash = await bcrypt.hash(password, 12);
@@ -50,7 +52,7 @@ async function main() {
 
       const rows = await tx<{ id: string }[]>`
         INSERT INTO customers ${tx(customers.map((c) => ({ ...c, is_demo: true })))}
-        ON CONFLICT (email) DO NOTHING
+        ON CONFLICT (email) DO UPDATE SET name = EXCLUDED.name
         RETURNING id`;
 
       const rand = prng(42);

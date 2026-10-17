@@ -1,7 +1,7 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // `postgres` and `bcryptjs` are server-only; keep them out of client bundles.
+  // `postgres` is server-only; load it from node_modules instead of bundling it.
   serverExternalPackages: ['postgres'],
 };
 

@@ -9,7 +9,7 @@ export default async function LatestInvoices() {
   const invoices = await fetchLatestInvoices();
   return (
     <div className="flex w-full flex-col md:col-span-4">
-      <h2 className="mb-4 font-display text-xl md:text-2xl">Recent invoices</h2>
+      <h2 className="mb-4 font-display text-xl md:text-2xl">Latest Invoices</h2>
       <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
         {invoices.length === 0 ? (
           <div className="rounded-md bg-white px-6 py-12 text-center text-sm text-gray-500">
